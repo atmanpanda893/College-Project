@@ -1,0 +1,67 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>User Dashboard - Skill-Based Job Portal</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/@yaireo/tagify/dist/tagify.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/@yaireo/tagify"></script>
+  <style>
+    :root { --primary: #6a11cb; --secondary: #2575fc; --bg: linear-gradient(135deg, var(--primary), var(--secondary)); }
+    * { margin:0; padding:0; box-sizing:border-box; font-family:'Poppins',sans-serif; }
+    body { background:#f7f8fc; display:flex; min-height:100vh; }
+    .sidebar { width:240px; background:var(--bg); color:white; padding:20px; display:flex; flex-direction:column; box-shadow:0 4px 20px rgba(0,0,0,0.2); position:fixed; height:100%; transition:left 0.4s ease; }
+    .sidebar h2 { text-align:center; margin-bottom:20px; font-size:24px; }
+    .sidebar a { text-decoration:none; color:white; padding:12px 15px; margin:5px 0; border-radius:10px; transition:0.3s; display:block; font-weight:500; }
+    .main { margin-left:260px; padding:30px; width:calc(100% - 260px); }
+    header { background:var(--bg); color:white; padding:15px 30px; border-radius:15px; box-shadow:0 3px 10px rgba(0,0,0,0.2); display:flex; justify-content:space-between; align-items:center; margin-bottom:25px; }
+    .cards { display:grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap:20px; }
+    .card { background:white; border-radius:15px; padding:20px; box-shadow:0 5px 15px rgba(0,0,0,0.1); transition: transform 0.3s; cursor:pointer; position:relative; }
+    .card h3 { color:var(--primary); margin-bottom:10px; }
+    input { width:100%; padding:10px; border-radius:8px; border:1px solid #ddd; }
+    footer { text-align:center; margin-top:30px; color:#777; font-size:12px; }
+  </style>
+</head>
+<body>
+  <div class="sidebar" data-aos="fade-right">
+    <h2>SkillPortal</h2>
+    <a href="dashboard_user.html">🏠 Dashboard</a>
+    <a href="profile_user.html">🧑‍💼 Profile</a>
+    <a href="jobs_user.html">💼 Job Listings</a>
+    <a href="applications_user.html">📄 My Applications</a>
+    <a href="settings_user.html">⚙️ Settings</a>
+    <a href="php/logout.php">🚪 Logout</a>
+  </div>
+  <div class="main">
+    <header data-aos="fade-down">
+      <h1>Welcome, <span class="user-info">User</span></h1>
+      <button id="toggleBtn">☰</button>
+    </header>
+    <section class="cards" data-aos="zoom-in-up">
+      <div class="card">
+        <h3>📊 Your Skills</h3>
+        <input name="skills" id="skills" placeholder="e.g. Java, Python, HTML">
+        <p style="margin-top:10px; color:#555;">Update your skills to get better recommendations.</p>
+      </div>
+      <div class="card">
+        <h3>💼 Recommended Jobs</h3>
+        <p>AI-powered recommendations coming soon...</p>
+      </div>
+      <div class="card">
+        <h3>📄 My Applications</h3>
+        <p>Track your applied jobs and their current status in one place.</p>
+      </div>
+      <div class="card">
+        <h3>⚙️ Profile Settings</h3>
+        <p>View and edit your personal information and uploaded resume.</p>
+      </div>
+    </section>
+    <footer>© 2025 Skill-Based Job Recommendation Portal | Designed by Atman & Subhrajit</footer>
+  </div>
+<script>AOS.init();const sidebar=document.querySelector('.sidebar');const toggleBtn=document.getElementById('toggleBtn');toggleBtn.addEventListener('click',()=>sidebar.classList.toggle('active'));const input=document.querySelector('#skills');new Tagify(input);</script>
+</body>
+</html>

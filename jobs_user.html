@@ -1,0 +1,44 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Job Listings - SkillPortal</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+  <style>:root{--primary:#6a11cb;--secondary:#2575fc;--bg:linear-gradient(135deg,var(--primary),var(--secondary));}*{box-sizing:border-box;font-family:'Poppins',sans-serif}body{background:#f7f8fc;display:flex;min-height:100vh;margin:0}.sidebar{width:240px;background:var(--bg);color:#fff;padding:20px;position:fixed;height:100%}.main{margin-left:260px;padding:28px;width:calc(100% - 260px)}header{background:var(--bg);color:#fff;padding:14px 20px;border-radius:12px;margin-bottom:22px}.jobs{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:18px}.job-card{background:#fff;border-radius:12px;padding:18px;box-shadow:0 6px 18px rgba(0,0,0,0.08)}.apply-btn{background:var(--primary);color:#fff;border:none;padding:8px 14px;border-radius:8px;cursor:pointer}</style>
+</head><body>
+  <div class="sidebar"><h2>SkillPortal</h2><a href="dashboard_user.html">🏠 Dashboard</a><a href="profile_user.html">🧑‍💼 Profile</a><a href="jobs_user.html" style="background:rgba(255,255,255,0.12)">💼 Job Listings</a><a href="applications_user.html">📄 My Applications</a><a href="settings_user.html">⚙️ Settings</a><a href="php/logout.php">🚪 Logout</a></div>
+  <div class="main">
+    <header><h1>💼 Available Jobs</h1></header>
+    <div id="jobsContainer" class="jobs" data-aos="fade-up"></div>
+    <div id="jobsEmpty" style="display:none;padding:30px;background:#fff;border-radius:12px;text-align:center;color:#666">No jobs found. Employers can post jobs via their dashboard.</div>
+  </div>
+<script>
+AOS.init();
+async function loadJobs(){
+  const res = await fetch('php/get_jobs.php');
+  const jobs = await res.json();
+  const container = document.getElementById('jobsContainer');
+  const empty = document.getElementById('jobsEmpty');
+  container.innerHTML='';
+  if (!jobs || jobs.length===0){ empty.style.display='block'; return; } else empty.style.display='none';
+  jobs.forEach(job => {
+    const card = document.createElement('div');
+    card.className='job-card';
+    card.innerHTML = `<h3>${escapeHtml(job.title)}</h3><div style="color:#555"><b>Company:</b> ${escapeHtml(job.company_name||'—')}</div><div style="color:#555"><b>Skills:</b> ${escapeHtml(job.required_skills||'—')}</div><p style="color:#444">${escapeHtml(job.description||'')}</p><button class="apply-btn" data-id="${job.id}">Apply</button>`;
+    container.appendChild(card);
+  });
+  document.querySelectorAll('.apply-btn').forEach(btn=>btn.addEventListener('click', async ()=>{
+    const id = btn.dataset.id; btn.disabled=true; btn.textContent='Applying...';
+    const form = new FormData(); form.append('job_id', id);
+    const r = await fetch('php/apply_job.php', { method:'POST', body: form }); const txt = await r.text();
+    alert(txt); btn.disabled=false; btn.textContent='Apply';
+  }));
+}
+function escapeHtml(s){ if(!s) return ''; return s.replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+loadJobs();
+</script>
+</body></html>
